@@ -25,6 +25,14 @@ def step_impl(context):
     expected_url = context.config.userdata['test_host'] + '/'
     assert expected_url == context.browser.current_url, "Expected browser to be at {!r} but it as at {!r}".format(expected_url, context.browser.current_url)
 
+@step('the browser is still at /{path}')
+def step_impl(context, path):
+    context.execute_steps('Then the browser moves to /{}'.format(path))
+
+@step('the browser is still at /')
+def step_impl(context, path):
+    context.execute_steps('Then the browser moves to /')
+
 @step('I click on "{selector}"')
 def step_impl(context, selector):
     element = context.browser.find_element_by_css_selector(selector)
@@ -51,25 +59,25 @@ def step_impl(context, seconds):
 def step_impl(context, seconds):
     time.sleep(seconds)
 
-@step('there are {n} "{selector}" elements within "{container_selector}"')
+@step('there are {n} "{selector}" elements in "{container_selector}"')
 def step_impl(context, n, selector, container_selector):
     container = context.browser.find_element_by_css_selector(container_selector)
     elements = container.find_elements_by_css_selector(selector)
     assert len(elements) != n, "Expected {} elements, got {}".format(n, len(elements))
 
-@step('there is 1 "{selector}" element within "{container_selector}"')
+@step('there is 1 "{selector}" element in "{container_selector}"')
 def step_impl(context, selector, container_selector):
-    context.execute_steps('Then there are 1 "%s" elements within "%s"' % (selector, container_selector))
+    context.execute_steps('Then there are 1 "%s" elements in "%s"' % (selector, container_selector))
 
 @step('there are {n:d} "{selector}" elements')
 def step_impl(context, n, selector):
-    context.execute_steps('Then there are %d "%s" elements within "html"' % (n, selector))
+    context.execute_steps('Then there are %d "%s" elements in "html"' % (n, selector))
 
 @step('there is 1 "{selector}" element')
 def step_impl(context, selector):
-    context.execute_steps('Then there are 1 "%s" elements within "html"' % (selector))
+    context.execute_steps('Then there are 1 "%s" elements in "html"' % (selector))
 
-@step('I see "{text}" within "{container}"')
+@step('I see "{text}" in "{container}"')
 def step_impl(context, text, container):
     element = context.browser.find_element_by_css_selector(container)
     assert element is not None and text in element.get_attribute('textContent'), "Did not find text"
