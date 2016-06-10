@@ -66,3 +66,9 @@ def step_impl(context, subject):
 @step('the email body contains "{text}"')
 def step_impl(context, text):
     assert text in context.message['message_raw']
+
+
+@step('the formatted email body contains "{template}"')
+def step_impl(context, template):
+    assert template.format(**context.variables) in context.message['message_raw']
+

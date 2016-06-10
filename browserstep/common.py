@@ -11,6 +11,10 @@ from behave import *
 def step_impl(context, path):
     context.browser.get(context.config.userdata['test_host'] + '/' + path)
 
+@step('I navigate to the formatted URL /{path}')
+def step_impl(context, path):
+    context.browser.get((context.config.userdata['test_host'] + '/' + path).format(**context.variables))
+
 @step('I navigate to /')
 def step_impl(context):
     context.browser.get(context.config.userdata['test_host'] + '/')
@@ -126,3 +130,17 @@ def step_impl(context, selector):
 @step('I\'m using the {name} browser')
 def step_impl(context, name):
     context.browser = getattr(context, name+'_browser')
+
+@step('I switch to the {name} browser')
+def step_impl(context, name):
+    context.execute_steps("Given I'm using the {} browser".format(name))
+
+@step('I capture the value of "{selector}" to the "{name}" variable')
+def step_impl(context, selector, name):
+    element = context.browser.find_element_by_css_selector(selector)
+    assert element is not None, "No such element found"
+    value = element.get_attribute("value")
+    if not hasattr(context, 'variables'):
+        context.variables = {}
+    context.variables[name] = value
+    print(context.variables)

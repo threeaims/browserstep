@@ -2,6 +2,14 @@
 History
 =======
 
+0.1.3 (2016-06-10)
+------------------
+
+* Added ability to capture values from fields and apply them to URLs to
+  naviagate to or checks inside email bodies
+* Added "I switch to the {name} browser" as an alias for "I'm using the
+  {name} browser"
+
 0.1.2 (2016-06-10)
 ------------------
 
