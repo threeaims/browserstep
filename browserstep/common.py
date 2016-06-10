@@ -47,17 +47,17 @@ def step_impl(context, text):
 
 @step('I click the "{text}" button')
 def step_impl(context, text):
-    element = context.browser.find_element_by_xpath("//button[contains(text(), '{}')] | //input[contains(text(), '{}')] ".format(text, text))
+    element = context.browser.find_element_by_xpath("//button[contains(text(), '{}')] | //input[@type='submit' and contains(@value,'{}')]".format(text, text))
     assert element is not None, "No such button found"
     element.click()
 
-@step('I wait for {seconds:f} second(s)')
+@step('I wait {seconds:f} seconds')
 def step_impl(context, seconds):
     time.sleep(seconds)
 
-@step('I wait for {seconds:d} second(s)')
-def step_impl(context, seconds):
-    time.sleep(seconds)
+@step('I wait 1 second')
+def step_impl(context):
+    time.sleep(1)
 
 @step('there are {n} "{selector}" elements in "{container_selector}"')
 def step_impl(context, n, selector, container_selector):
@@ -122,3 +122,7 @@ def step_impl(context, selector):
     element = context.browser.find_element_by_css_selector(selector)
     assert element is not None, "No such element found"
     element.send_keys(context.text)
+
+@step('I\'m using the {name} browser')
+def step_impl(context, name):
+    context.browser = getattr(context, name+'_browser')
