@@ -2,6 +2,15 @@
 History
 =======
 
+0.1.4 (2016-06-20)
+------------------
+
+* Fields are cleared before text is sent to them
+* Fixed an ordering issue with 'the browser is still at /'
+* 'I follow the "{text}" link' also works with image alt text
+* Added 'I click the "{text}" label' to allow clicking on labels in forms
+* Added 'the value of "{selector}" is "{value}"' for input values
+
 0.1.3 (2016-06-10)
 ------------------
 

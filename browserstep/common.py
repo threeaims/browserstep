@@ -29,13 +29,13 @@ def step_impl(context):
     expected_url = context.config.userdata['test_host'] + '/'
     assert expected_url == context.browser.current_url, "Expected browser to be at {!r} but it as at {!r}".format(expected_url, context.browser.current_url)
 
+@step('the browser is still at /')
+def step_impl(context):
+    context.execute_steps('Then the browser moves to /')
+
 @step('the browser is still at /{path}')
 def step_impl(context, path):
     context.execute_steps('Then the browser moves to /{}'.format(path))
-
-@step('the browser is still at /')
-def step_impl(context, path):
-    context.execute_steps('Then the browser moves to /')
 
 @step('I click on "{selector}"')
 def step_impl(context, selector):
@@ -45,14 +45,22 @@ def step_impl(context, selector):
 
 @step('I follow the "{text}" link')
 def step_impl(context, text):
-    element = context.browser.find_element_by_link_text(text)
-    assert element is not None, "No such link found"
-    element.click()
+    elements = context.browser.find_elements_by_link_text(text)
+    if not elements:
+        elements = context.browser.find_elements_by_xpath("//img[contains(@alt,'{}')]".format(text))
+    assert len(elements) == 1, "Expected 1 matching link, not {}".format(len(elements))
+    elements[0].click()
 
 @step('I click the "{text}" button')
 def step_impl(context, text):
     element = context.browser.find_element_by_xpath("//button[contains(text(), '{}')] | //input[@type='submit' and contains(@value,'{}')]".format(text, text))
     assert element is not None, "No such button found"
+    element.click()
+
+@step('I click the "{text}" label')
+def step_impl(context, text):
+    element = context.browser.find_element_by_xpath("//label[contains(text(), '{}')]".format(text))
+    assert element is not None, "No such label found"
     element.click()
 
 @step('I wait {seconds:f} seconds')
@@ -119,12 +127,14 @@ def step_impl(context):
 def step_impl(context, text, selector):
     element = context.browser.find_element_by_css_selector(selector)
     assert element is not None, "No such element found"
+    element.clear()
     element.send_keys(text)
 
 @step('I type the following into "{selector}"')
 def step_impl(context, selector):
     element = context.browser.find_element_by_css_selector(selector)
     assert element is not None, "No such element found"
+    element.clear()
     element.send_keys(context.text)
 
 @step('I\'m using the {name} browser')
@@ -144,3 +154,9 @@ def step_impl(context, selector, name):
         context.variables = {}
     context.variables[name] = value
     print(context.variables)
+
+@step('the value of "{selector}" is "{value}"')
+def step_impl(context, selector, value):
+    element = context.browser.find_element_by_css_selector(selector)
+    assert element is not None, "No such element found"
+    assert value == element.get_attribute("value"), '{} != {}'.format(value, element.get_attribute("value"))
