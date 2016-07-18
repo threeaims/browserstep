@@ -3,6 +3,7 @@
 
 
 import requests
+import re
 from behave import *
 
 
@@ -72,3 +73,13 @@ def step_impl(context, text):
 def step_impl(context, template):
     assert template.format(**context.variables) in context.message['message_raw']
 
+
+@step('I capture the value of "{regex}" in the message to the "{name}" variable')
+def step_impl(context, regex, name):
+    if not hasattr(context, 'variables'):
+        context.variables = {}
+    reg = re.compile(regex)
+    string = context.message['message_raw']
+    value = reg.search(string).group(1)
+    context.variables[name] = value
+    print(context.variables)

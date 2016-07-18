@@ -130,6 +130,14 @@ def step_impl(context, text, selector):
     element.clear()
     element.send_keys(text)
 
+
+@step('I type "" into "{selector}"')
+def step_impl(context, selector):
+    element = context.browser.find_element_by_css_selector(selector)
+    assert element is not None, "No such element found"
+    element.clear()
+
+
 @step('I type the following into "{selector}"')
 def step_impl(context, selector):
     element = context.browser.find_element_by_css_selector(selector)
@@ -160,3 +168,10 @@ def step_impl(context, selector, value):
     element = context.browser.find_element_by_css_selector(selector)
     assert element is not None, "No such element found"
     assert value == element.get_attribute("value"), '{} != {}'.format(value, element.get_attribute("value"))
+
+
+@then(u'"{selector}" is checked')
+def step_impl(context, selector):
+    element = context.browser.find_element_by_css_selector(selector)
+    assert element is not None, "No such element found"
+    assert element.get_attribute('checked') == 'true', "Element is not checked"

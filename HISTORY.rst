@@ -2,6 +2,16 @@
 History
 =======
 
+0.1.5 (2016-07-18)
+------------------
+
+* Added 'type "" into a selector'
+* Added '"{selector}" is checked'
+* Added 'I capture the value of "{regex}" in the message to the "{name}" variable'
+* Added `browserstep/debug.py`
+* Added `browserstep/popup.py`
+* Added `browserstep/timetravel.py`
+
 0.1.4 (2016-06-20)
 ------------------
 
