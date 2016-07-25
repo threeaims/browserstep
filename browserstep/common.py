@@ -5,6 +5,8 @@ import os
 import time
 
 from behave import *
+from selenium import webdriver
+from selenium.webdriver.support.ui import Select
 
 
 @step('I navigate to /{path}')
@@ -63,9 +65,9 @@ def step_impl(context, text):
     assert element is not None, "No such label found"
     element.click()
 
-@step('I wait {seconds:f} seconds')
+@step('I wait {seconds} seconds')
 def step_impl(context, seconds):
-    time.sleep(seconds)
+    time.sleep(float(seconds))
 
 @step('I wait 1 second')
 def step_impl(context):
@@ -170,8 +172,18 @@ def step_impl(context, selector, value):
     assert value == element.get_attribute("value"), '{} != {}'.format(value, element.get_attribute("value"))
 
 
-@then(u'"{selector}" is checked')
+@step(u'"{selector}" is checked')
 def step_impl(context, selector):
     element = context.browser.find_element_by_css_selector(selector)
     assert element is not None, "No such element found"
     assert element.get_attribute('checked') == 'true', "Element is not checked"
+
+
+@step('I choose "{choice}" from "{selector}"')
+def step_impl(context, choice, selector):
+    select = Select(
+        context.browser.find_element_by_css_selector(selector)
+    )
+    select.select_by_visible_text(choice)
+    # select.select_by_value(choice)
+

@@ -2,6 +2,12 @@
 History
 =======
 
+0.1.6 (2106-07-25)
+------------------
+
+* Added 'I choose "{choice}" from "{selector}"'
+* Support whole number of seconds when waiting
+
 0.1.5 (2016-07-18)
 ------------------
 
