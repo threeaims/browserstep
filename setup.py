@@ -21,7 +21,7 @@ test_requirements = [
 
 setup(
     name='browserstep',
-    version='0.1.7',
+    version='0.1.8',
     description="Browser step provides common steps to be used by Behave for running browser tests with Selenium",
     long_description=readme + '\n\n' + history,
     author="James Gardner",

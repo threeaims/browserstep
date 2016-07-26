@@ -2,6 +2,12 @@
 History
 =======
 
+0.1.8 (2016-07-26)
+------------------
+
+* Added '"{selector}" is not checked'
+* Added '"{selector}" has the following text with all whitespace removed'
+
 0.1.7 (2016-07-26)
 ------------------
 

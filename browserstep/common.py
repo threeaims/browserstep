@@ -102,6 +102,15 @@ def step_impl(context, text, container):
     element = context.browser.find_element_by_css_selector(container)
     assert element is not None and text in element.get_attribute('textContent'), "Did not find text"
 
+def strip_all_whitespace(text):
+    return text.replace(' ', '').replace('\n', '').replace('\t', '')
+
+@step('"{selector}" has the following text with all whitespace removed')
+def step_impl(context, selector):
+    element = context.browser.find_element_by_css_selector(selector)
+    assert element is not None and strip_all_whitespace(context.text) == strip_all_whitespace(element.get_attribute('textContent')), "Different: {}".format(element.get_attribute('textContent'))
+
+
 import subprocess
 
 @step('I run the following command')
@@ -193,6 +202,13 @@ def step_impl(context, selector):
     element = context.browser.find_element_by_css_selector(selector)
     assert element is not None, "No such element found"
     assert element.get_attribute('checked') == 'true', "Element is not checked"
+
+
+@step(u'"{selector}" is not checked')
+def step_impl(context, selector):
+    element = context.browser.find_element_by_css_selector(selector)
+    assert element is not None, "No such element found"
+    assert element.get_attribute('checked') is None, "Element is checked"
 
 
 @step('I choose "{choice}" from "{selector}"')
