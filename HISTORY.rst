@@ -2,6 +2,12 @@
 History
 =======
 
+0.1.7 (2016-07-26)
+------------------
+
+* Added 'the browser is at the formatted URL /{path}'
+* Added 'I capture the value of "{regex}" in the URL to the "{name}" variable'
+
 0.1.6 (2106-07-25)
 ------------------
 

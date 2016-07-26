@@ -3,6 +3,7 @@
 
 import os
 import time
+import re
 
 from behave import *
 from selenium import webdriver
@@ -38,6 +39,11 @@ def step_impl(context):
 @step('the browser is still at /{path}')
 def step_impl(context, path):
     context.execute_steps('Then the browser moves to /{}'.format(path))
+
+@step('the browser is at the formatted URL /{path}')
+def step_impl(context, path):
+    expected_url = (context.config.userdata['test_host'] + '/' + path).format(**context.variables)
+    assert expected_url == context.browser.current_url, "Expected browser to be at {!r} but it as at {!r}".format(expected_url, context.browser.current_url)
 
 @step('I click on "{selector}"')
 def step_impl(context, selector):
@@ -162,6 +168,16 @@ def step_impl(context, selector, name):
     value = element.get_attribute("value")
     if not hasattr(context, 'variables'):
         context.variables = {}
+    context.variables[name] = value
+    print(context.variables)
+
+@step('I capture the value of "{regex}" in the URL to the "{name}" variable')
+def step_impl(context, regex, name):
+    if not hasattr(context, 'variables'):
+        context.variables = {}
+    reg = re.compile(regex)
+    string = context.browser.current_url
+    value = reg.search(string).group(1)
     context.variables[name] = value
     print(context.variables)
 
