@@ -2,6 +2,14 @@
 History
 =======
 
+0.1.9 (2016-08-08)
+------------------
+
+* Added 'I hover over "{container_selector}"'
+* Added 'I follow the "{text}" link in "{container_selector}"'
+
+Thanks to Chris Adams for help with these.
+
 0.1.8 (2016-07-26)
 ------------------
 
